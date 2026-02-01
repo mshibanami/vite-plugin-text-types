@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite Plugin Text Types Example</title>
+  </head>
+  <body>
+    <div id="app" style="font-family: monospace; padding: 2rem; color: #333">
+      <h1
+        style="
+          font-size: 1.5rem;
+          border-bottom: 2px solid #ddd;
+          padding-bottom: 0.5rem;
+          margin-bottom: 1.5rem;
+        "
+      >
+        vite-plugin-text-types
+      </h1>
+
+      <div id="hello-output" style="margin-bottom: 2rem">
+        <pre></pre>
+      </div>
+
+      <div style="margin-bottom: 2rem">
+        <strong>Virtual Module Content:</strong>
+        <pre
+          id="json-output"
+          style="
+            background: #f4f4f4;
+            padding: 1rem;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+          "
+        ></pre>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

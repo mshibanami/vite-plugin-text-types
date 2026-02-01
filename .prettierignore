@@ -1,0 +1,27 @@
+# Ignore artifacts and generated files
+dist
+build
+coverage
+.wxt
+.output
+.nuxt
+.next
+.cache
+
+# Dependencies
+node_modules
+
+# Project specific
+pnpm-lock.yaml
+pnpm-workspace.yaml
+
+# System files
+.DS_Store
+.git
+.env
+
+packages
+
+# Extensions
+*.min.js
+*.min.css

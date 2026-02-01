@@ -1,0 +1,14 @@
+{
+  "overrides": [
+    {
+      "files": ["*.js", "*.ts", "*.cjs"],
+      "options": {
+        "trailingComma": "all",
+        "singleQuote": true,
+        "printWidth": 100,
+        "tabWidth": 2,
+        "useTabs": false
+      }
+    }
+  ]
+}
