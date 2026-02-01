@@ -87,7 +87,7 @@ Check the [example](example) folder for a complete example.
 ### 2. Import in your code
 
 ```ts
-import { texts, getText } from "virtual:text-types";
+import { texts, getText } from "./@generated/text-types";
 
 // 1. Direct access via 'texts'
 console.log(texts["intro.txt"]); // Typed as the actual content of intro.txt
@@ -96,14 +96,10 @@ console.log(texts["intro.txt"]); // Typed as the actual content of intro.txt
 // If intro.txt contains "Hello {{ name }}!"
 const greeting = getText("intro.txt", { name: "John" });
 // ^ TypeScript will enforce that 'name' is required and is a string|number.
-
-// Types are generated automatically in src/text-types.d.ts
-type IntroContent = (typeof texts)["intro.txt"]; // e.g. "Hello, John!"
+```
 
 > [!TIP]
-> It is recommended to add the generated `text-types.d.ts` file to your `.gitignore`.
-
-```
+> It is recommended to add the generated `src/@generated/text-types` folder to your `.gitignore`.
 
 The most powerful feature of this plugin is the ability to handle variables within your text files. The plugin will generate a `getText` signature that knows exactly which variables are required.
 
@@ -111,18 +107,15 @@ Variables are identified by the `{{ key }}` syntax by default. You can customize
 
 ## Configuration Options
 
-| Option                     | Type                  | Default                 | Description                                                                                          |
-| -------------------------- | --------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------- |
-| `include`                  | `string \| string[]`  | **Required**            | Glob pattern(s) for files to include. Recommend project-root-relative globs like `src/content/*.md`. |
-| `exclude`                  | `string \| string[]`  | `undefined`             | Glob pattern(s) to exclude.                                                                          |
-| `keyTransform.stripPrefix` | `string`              | `undefined`             | String to strip from the start of the generated keys.                                                |
-| `dts`                      | `string \| false`     | `'src/text-types.d.ts'` | Path to the generated `.d.ts` file. Set `false` to disable.                                          |
-| `virtualModuleId`          | `string`              | `'virtual:text-types'`  | ID for the virtual module.                                                                           |
-| `maxLiteralLength`         | `number`              | `50_000`                | Max length for a string literal type. Larger files fall back to `string`.                            |
-| `delimiters`               | `[string, string]`    | `['{{', '}}']`          | Custom variable delimiters.                                                                          |
-| `query`                    | `string`              | `'?raw'`                | The query string used for `import.meta.glob`.                                                        |
-| `import`                   | `'default' \| string` | `'default'`             | The import clause used for `import.meta.glob`.                                                       |
-| `eager`                    | `boolean`             | `true`                  | Whether to use eager loading for `import.meta.glob`.                                                 |
+| Option                     | Type                 | Default                                | Description                                                                                          |
+| -------------------------- | -------------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `include`                  | `string \| string[]` | **Required**                           | Glob pattern(s) for files to include. Recommend project-root-relative globs like `src/content/*.md`. |
+| `exclude`                  | `string \| string[]` | `undefined`                            | Glob pattern(s) to exclude.                                                                          |
+| `output`                   | `string`             | `'src/@generated/text-types/index.ts'` | Path to the generated `.ts` file.                                                                    |
+| `keyTransform.stripPrefix` | `string`             | `undefined`                            | String to strip from the start of the generated keys.                                                |
+| `dts`                      | `string \| false`    | `false`                                | Path to an optional generated `.d.ts` file. Usually not needed if `output` is used.                  |
+| `maxLiteralLength`         | `number`             | `50_000`                               | Max length for a string literal type. Larger files fall back to `string`.                            |
+| `delimiters`               | `[string, string]`   | `['{{', '}}']`                         | Custom variable delimiters.                                                                          |
 
 ## License
 

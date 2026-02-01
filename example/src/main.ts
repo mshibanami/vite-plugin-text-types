@@ -1,4 +1,4 @@
-import { texts, getText } from 'virtual:text-types';
+import { texts, getText } from './@generated/text-types';
 
 // 1. Render raw JSON content
 const jsonOutput = document.getElementById('json-output');

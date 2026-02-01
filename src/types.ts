@@ -10,29 +10,15 @@ export interface TextTypesOptions {
   exclude?: string | string[];
 
   /**
-   * Virtual module ID. Default: 'virtual:text-types'
+   * Path to generated .ts file. Default: 'src/@generated/text-types/index.ts'
    */
-  virtualModuleId?: string;
+  output?: string;
 
   /**
-   * Path to generated d.ts file. Default: 'src/text-types.d.ts'. Set false to disable.
+   * Path to generated .d.ts file. Optional.
+   * If output is .ts, .d.ts is usually not needed as the .ts file contains types.
    */
   dts?: string | false;
-
-  /**
-   * import.meta.glob query (raw import). Default: '?raw'
-   */
-  query?: string;
-
-  /**
-   * import.meta.glob import name. Default: 'default'
-   */
-  import?: 'default' | string;
-
-  /**
-   * import.meta.glob eager option. Default: true (v1 can hardcode true)
-   */
-  eager?: boolean;
 
   /**
    * Transform generated keys

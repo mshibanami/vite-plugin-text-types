@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import path from 'node:path';
 import fs from 'node:fs';
-import { collectFiles, generateDts, writeIfChanged } from '../src/generator';
+import { collectFiles, generateDts, generateTsContent, writeIfChanged } from '../src/generator';
 
 describe('collectFiles', () => {
   it('correctly collects and transforms file paths', () => {
@@ -39,9 +39,9 @@ describe('generateDts', () => {
       { key: 'hello.md', content: 'Hello, John!' },
       { key: 'quoted.md', content: 'Say "Hello"\'s' },
     ];
-    const dts = generateDts('virtual:my-texts', entries);
+    const dts = generateDts('my-texts', entries);
 
-    expect(dts).toContain(`declare module 'virtual:my-texts'`);
+    expect(dts).toContain(`declare module 'my-texts'`);
     expect(dts).toContain(`"hello.md": "Hello, John!"`);
     expect(dts).toContain(`"quoted.md": "Say \\"Hello\\"'s"`);
   });
@@ -51,17 +51,29 @@ describe('generateDts', () => {
       { key: 'short.md', content: 'short' },
       { key: 'long.md', content: 'a'.repeat(100) },
     ];
-    const dts = generateDts('virtual:my-texts', entries, 50);
+    const dts = generateDts('my-texts', entries, 50);
 
     expect(dts).toContain(`"short.md": "short"`);
     expect(dts).toContain(`"long.md": string`);
   });
+});
 
-  it('generates d.ts with custom delimiters', () => {
+describe('generateTsContent', () => {
+  it('generates .ts with content and logic', () => {
+    const entries = [{ key: 'hello.md', content: 'Hello, {{name}}!' }];
+    const ts = generateTsContent(entries);
+
+    expect(ts).toContain(`export const texts = {`);
+    expect(ts).toContain(`"hello.md": "Hello, {{name}}!"`);
+    expect(ts).toContain(`export function getText`);
+    expect(ts).toContain(`const t: string = texts[id]`);
+  });
+
+  it('handles custom delimiters', () => {
     const entries = [{ key: 'hello.md', content: 'Hello, {{{ name }}}!' }];
-    const dts = generateDts('virtual:my-texts', entries, 50_000, ['{{{', '}}}']);
+    const ts = generateTsContent(entries, 50_000, ['{{{', '}}}']);
 
-    expect(dts).toContain(
+    expect(ts).toContain(
       'type ExtractVars<T extends string> = T extends `${string}{{{${infer Prop}}}}${infer Rest}`',
     );
   });

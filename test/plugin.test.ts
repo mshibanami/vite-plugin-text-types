@@ -15,7 +15,7 @@ describe('vite-plugin-text-types integration', () => {
     fs.writeFileSync(path.join(contentDir, 'foo.txt'), 'Foo Bar', 'utf-8');
 
     const mainTs = `
-      import { texts, getText } from 'virtual:text-types'
+      import { texts, getText } from './@generated/text-types'
       console.log(JSON.stringify(texts))
     `;
     fs.writeFileSync(path.join(srcDir, 'main.ts'), mainTs, 'utf-8');
@@ -25,8 +25,8 @@ describe('vite-plugin-text-types integration', () => {
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it('builds successfully and generates d.ts', async () => {
-    const dtsPath = path.join(tempDir, 'src/text-types.d.ts');
+  it('builds successfully and generates .ts file', async () => {
+    const tsPath = path.join(tempDir, 'src/@generated/text-types/index.ts');
 
     await build({
       root: tempDir,
@@ -42,7 +42,7 @@ describe('vite-plugin-text-types integration', () => {
       plugins: [
         textTypes({
           include: '**/*.{md,txt}',
-          dts: 'src/text-types.d.ts',
+          output: 'src/@generated/text-types/index.ts',
           keyTransform: {
             stripPrefix: '/src/content/',
           },
@@ -50,14 +50,14 @@ describe('vite-plugin-text-types integration', () => {
       ],
     });
 
-    expect(fs.existsSync(dtsPath)).toBe(true);
-    const dtsContent = fs.readFileSync(dtsPath, 'utf-8');
-    expect(dtsContent).toContain('"hello.md": "# Hello"');
-    expect(dtsContent).toContain('"foo.txt": "Foo Bar"');
+    expect(fs.existsSync(tsPath)).toBe(true);
+    const tsContent = fs.readFileSync(tsPath, 'utf-8');
+    expect(tsContent).toContain('"hello.md": "# Hello"');
+    expect(tsContent).toContain('"foo.txt": "Foo Bar"');
   });
 
   it('supports custom delimiters', async () => {
-    const dtsPath = path.join(tempDir, 'src/custom-delims.d.ts');
+    const tsPath = path.join(tempDir, 'src/custom-delims.ts');
     fs.writeFileSync(path.join(contentDir, 'vars.md'), 'Hello {{{ name }}}', 'utf-8');
 
     await build({
@@ -73,14 +73,14 @@ describe('vite-plugin-text-types integration', () => {
       plugins: [
         textTypes({
           include: 'src/content/vars.md',
-          dts: 'src/custom-delims.d.ts',
+          output: 'src/custom-delims.ts',
           delimiters: ['{{{', '}}}'],
         }),
       ],
     });
 
-    const dtsContent = fs.readFileSync(dtsPath, 'utf-8');
-    expect(dtsContent).toContain(
+    const tsContent = fs.readFileSync(tsPath, 'utf-8');
+    expect(tsContent).toContain(
       'type ExtractVars<T extends string> = T extends `${string}{{{${infer Prop}}}}${infer Rest}`',
     );
   });
