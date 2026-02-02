@@ -5,6 +5,10 @@
   "type": "module",
   "author": "Manabu Nakazawa",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mshibanami/vite-plugin-text-types.git"
+  },
   "publishConfig": {
     "access": "public"
   },
