@@ -3,7 +3,7 @@
 [![Test](https://github.com/mshibanami/vite-plugin-text-types/actions/workflows/test.yml/badge.svg)](https://github.com/mshibanami/vite-plugin-text-types/actions/workflows/test.yml)
 [![NPM version](https://img.shields.io/npm/v/vite-plugin-text-types.svg?style=flat)](https://www.npmjs.org/package/vite-plugin-text-types)
 
-A Vite plugin that generates TypeScript definitions (string literal types) for your text assets (Markdown, txt, etc.).
+A Vite (and [tsdown](https://github.com/tsdown/tsdown)) plugin that generates TypeScript definitions (string literal types) for your text assets (Markdown, txt, etc.).
 
 ## What problem does this solve?
 
@@ -45,7 +45,7 @@ const output = getText({ name: "John" }); // 'Hello, John!'
 This is type-safe, but works only when it's hard-coded with `as const`.
 Maintaining Markdown text written in JavaScript/TypeScript is problematic since you can't use formatters, syntax highlighting, or other tools.
 
-vite-plugin-text-types allows you to write text files (e.g., Markdown) normally, and then it copies them with proper TypeScript definitions when you run `vite build`.
+vite-plugin-text-types allows you to write text files (e.g., Markdown) normally, and then it generates proper TypeScript definitions for them when you run your build (Vite or tsdown).
 
 > [!WARNING]
 >
@@ -63,11 +63,11 @@ npm install -D vite-plugin-text-types
 
 ```ts
 import { defineConfig } from "vite";
-import textTypes from "vite-plugin-text-types";
+import { textTypesVitePlugin } from "vite-plugin-text-types";
 
 export default defineConfig({
   plugins: [
-    textTypes({
+    textTypesVitePlugin({
       // Glob pattern(s) to include
       include: "**/*.{md,txt}",
 
@@ -82,7 +82,25 @@ export default defineConfig({
 
 Check [Configuration Options](#configuration-options) for more details about the options.
 
-Check the [example](example) folder for a complete example.
+Check the [example](example) folder for a complete Vite example.
+
+#### Usage with tsdown
+
+If you are using [tsdown](https://github.com/tsdown/tsdown), use `textTypesTsdownPlugin` instead. It automatically initializes the plugin for non-Vite environments.
+
+```ts
+import { defineConfig } from "tsdown";
+import { textTypesTsdownPlugin } from "vite-plugin-text-types";
+
+export default defineConfig({
+  entry: ["src/index.ts"],
+  plugins: [
+    textTypesTsdownPlugin({
+      include: "src/content/**/*.md",
+    }),
+  ],
+});
+```
 
 ### 2. Import in your code
 

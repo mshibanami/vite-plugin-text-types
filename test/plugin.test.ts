@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import path from 'node:path';
 import fs from 'node:fs';
 import { build } from 'vite';
-import textTypes from '../src/index';
+import { textTypesVitePlugin } from '../src/index';
 
 describe('vite-plugin-text-types integration', () => {
   const tempDir = path.resolve(__dirname, 'temp-fixture');
@@ -40,7 +40,7 @@ describe('vite-plugin-text-types integration', () => {
         write: true,
       },
       plugins: [
-        textTypes({
+        textTypesVitePlugin({
           include: '**/*.{md,txt}',
           output: 'src/@generated/text-types/index.ts',
           keyTransform: {
@@ -71,7 +71,7 @@ describe('vite-plugin-text-types integration', () => {
         },
       },
       plugins: [
-        textTypes({
+        textTypesVitePlugin({
           include: 'src/content/vars.md',
           output: 'src/custom-delims.ts',
           delimiters: ['{{{', '}}}'],

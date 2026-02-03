@@ -13,7 +13,7 @@ import {
 
 export type { TextTypesOptions };
 
-export default function textTypes(options: TextTypesOptions): Plugin {
+export function textTypesVitePlugin(options: TextTypesOptions): Plugin {
   const {
     include,
     exclude,
@@ -89,4 +89,16 @@ export default function textTypes(options: TextTypesOptions): Plugin {
       return [];
     },
   };
+}
+
+/**
+ * tsdown-compatible entry point for vite-plugin-text-types.
+ * It automatically initializes the plugin for non-Vite environments.
+ */
+export function textTypesTsdownPlugin(options: TextTypesOptions, root: string = process.cwd()) {
+  const plugin = textTypesVitePlugin(options);
+  if (typeof plugin.configResolved === 'function') {
+    plugin.configResolved({ root } as any);
+  }
+  return plugin;
 }

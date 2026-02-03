@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite';
-import textTypes from 'vite-plugin-text-types';
+import textTypesTsdownPlugin from 'vite-plugin-text-types';
 
 export default defineConfig({
   plugins: [
-    textTypes({
+    textTypesTsdownPlugin({
       include: 'src/**/*.{md,txt}',
       keyTransform: {
         stripPrefix: '/src/content/',
